@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- textures -->
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="secondaryVeryLight">#ffffff</color>
+    <color name="secondaryLight">#ffbdbdbd</color>
+    <color name="message_background">#455A64</color>
+
+    <!-- texts -->
+    <color name="primary_light_text">#ffffff</color>
+    <color name="primary_dark_text">#424242</color>
+
 </resources>

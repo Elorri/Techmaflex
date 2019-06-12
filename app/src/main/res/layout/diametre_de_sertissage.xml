@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/diametre_de_sertissage_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/message_background"
+        android:padding="16dp"
+        android:text="Il y  a un probleme"
+        android:textColor="@color/primary_light_text"
+        android:visibility="gone"/>
+
+    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/diametre_de_sertissage_no_data"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="20dp"
+                android:text="Pour commencer, definissez les combinaisons Tuyau / Jupe / Embout / Diamètre de sertissage dans un fichier csv. \n\n Vous pouvez utiliser l'une des 2 options suivantes pour configurer le fichier csv."
+                android:textColor="@color/primary_dark_text"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@color/secondaryVeryLight"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:text="Synchroniser un fichier csv : \n (option la moins contraignante)"
+                        android:textColor="@color/primary_dark_text"/>
+
+                    <Button
+                        android:id="@+id/diametre_de_serissage_synchonisation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="7dp"
+                        android:text="Synchroniser"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:text="ou"
+                    android:textColor="@color/primary_dark_text"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@color/secondaryVeryLight"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:text="Importer un fichier csv : \n (necessite de refaire un import à chaque changement)"
+                        android:textColor="@color/primary_dark_text"/>
+
+                    <Button
+                        android:id="@+id/diametre_de_serissage_import"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="7dp"
+                        android:text="Importer"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/diametre_de_sertissage_main"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/diametre_de_serissage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="@string/diametre_de_serissage"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/diametre_de_sertissage_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                    tools:text="18,6"/>
+                <Button
+                    android:id="@+id/diametre_de_sertissage_send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Envoyer"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                />
+
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/diametre_de_sertissage_tuyau"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="16dp"
+                android:layout_margin="8dp"/>
+
+            <Spinner
+                android:id="@+id/diametre_de_sertissage_jupe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
+                android:padding="16dp"
+                android:gravity="center"/>
+
+            <Spinner
+                android:id="@+id/diametre_de_sertissage_embout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="16dp"
+                android:layout_margin="8dp"/>
+
+            <Button
+                android:id="@+id/diametre_de_sertissage_reset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:text="@string/reset"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+</LinearLayout>
+

@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">App</string>
+    <string name="app_name">Techmaflex</string>
+    <string name="page_not_found">App</string>
+    <string name="diametre_de_serissage">Diamètre de sertissage</string>
+    <string name="reset">Réinitialiser</string>
+    <string name="envoyer">Envoyer</string>
 </resources>
