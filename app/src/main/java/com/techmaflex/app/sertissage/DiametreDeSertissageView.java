@@ -23,6 +23,9 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
 
     private final Context mContext;
     private DatastoreBundle mBundle;
+    private int tuyauSelectCount;
+    private int jupeSelectCount;
+    private int emboutSelectCount;
 
     public DiametreDeSertissageView(@NonNull Context context) {
         this(context, null);
@@ -55,39 +58,30 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
         // car les méthodes qui suivent font appel à updateViewFromBundle qui ne fonctionne qu'avec le bundle d'instance.
         mBundle = new RetrieveSertissageBundleInit().retrieveData(datastore, bundleQuery);
 
-
         //Init des vues indiquées visibles par le bundle, et init avec les valeurs du bundle.
-         
-        for (DatastoreBundle aViewBundle : mBundle.getDatastoreBundleArrayList("views")) {
 
-            switch (aViewBundle.getString("id")) {
-                case "diametre_de_sertissage_message": {
-                    View diametre_de_sertissage_message = findViewByName("diametre_de_sertissage_message");
-                    diametre_de_sertissage_message.setVisibility(getIntVisibility(aViewBundle.getString("visibility")));
-                    if (diametre_de_sertissage_message.getVisibility() == VISIBLE) {
-                        initMessageView();
-                    }
-                    break;
-                }
-                case "diametre_de_sertissage_no_data": {
-                    View diametre_de_sertissage_no_data = findViewByName("diametre_de_sertissage_no_data");
-                    diametre_de_sertissage_no_data.setVisibility(getIntVisibility(aViewBundle.getString("visibility")));
-                    if (diametre_de_sertissage_no_data.getVisibility() == VISIBLE) {
-                        initDiametreDeSertissageNoDataView();
-                    }
-                    break;
-                }
-                case "diametre_de_sertissage_main": {
-                    View diametre_de_sertissage_main = findViewByName("diametre_de_sertissage_main");
-                    diametre_de_sertissage_main.setVisibility(getIntVisibility(aViewBundle.getString("visibility")));
-                    if (diametre_de_sertissage_main.getVisibility() == VISIBLE) {
-                        initDiametreDeSertissageMainView(datastore);
-                    }
-                    break;
-                }
-                default:
-            }
+        View messageView = findViewByName("diametre_de_sertissage_message");
+        DatastoreBundle messageViewBundle =
+                mBundle.getDatastoreBundle("views").getDatastoreBundle("diametre_de_sertissage_message");
+        messageView.setVisibility(getIntVisibility(messageViewBundle.getString("visibility")));
+        if (messageView.getVisibility() == VISIBLE) {
+            initMessageView();
         }
+        View noDataView = findViewByName("diametre_de_sertissage_no_data");
+        DatastoreBundle noDataViewBundle =
+                mBundle.getDatastoreBundle("views").getDatastoreBundle("diametre_de_sertissage_no_data");
+        noDataView.setVisibility(getIntVisibility(noDataViewBundle.getString("visibility")));
+        if (noDataView.getVisibility() == VISIBLE) {
+            initDiametreDeSertissageNoDataView();
+        }
+        View diametreSertissageView = findViewByName("diametre_de_sertissage_main");
+        DatastoreBundle diametreSertissageViewBundle =
+                mBundle.getDatastoreBundle("views").getDatastoreBundle("diametre_de_sertissage_main");
+        diametreSertissageView.setVisibility(getIntVisibility(diametreSertissageViewBundle.getString("visibility")));
+        if (diametreSertissageView.getVisibility() == VISIBLE) {
+            initDiametreDeSertissageMainView(datastore);
+        }
+
     }
 
 
@@ -189,29 +183,37 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
     }
 
     private void onTuyauSelected(Datastore datastore, Spinner spinnerView, int position) {
-        onSpinnerItemSelected(datastore, spinnerView, position);
+        tuyauSelectCount++;
+        boolean isFirstTuyauFirstSelection = tuyauSelectCount <= 1;
+        onSpinnerItemSelected(datastore, spinnerView, position, !isFirstTuyauFirstSelection);
     }
 
     private void onJupeSelected(Datastore datastore, Spinner spinnerView, int position) {
-        onSpinnerItemSelected(datastore, spinnerView, position);
+        jupeSelectCount++;
+        boolean isFirstJupeFirstSelection = jupeSelectCount <= 1;
+        onSpinnerItemSelected(datastore, spinnerView, position, !isFirstJupeFirstSelection);
     }
 
     private void onEmboutSelected(Datastore datastore, Spinner spinnerView, int position) {
-        onSpinnerItemSelected(datastore, spinnerView, position);
+        emboutSelectCount++;
+        boolean isFirstEmboutFirstSelection = emboutSelectCount <= 1;
+        onSpinnerItemSelected(datastore, spinnerView, position, !isFirstEmboutFirstSelection);
     }
 
-
-    private void onSpinnerItemSelected(Datastore datastore, Spinner spinnerView, int position) {
+    private void onSpinnerItemSelected(Datastore datastore, Spinner spinnerView, int position, boolean isUserSelection) {
         String selection = (String) spinnerView.getAdapter().getItem(position);
         spinnerView.setSelection(position);
-//      TODO  L'une ou l'autre de ces commandes ne mets pas à jour l'arraylist view du bundle, il faudraudrait que views ne soit pas un arraylist'
-        //DatastoreBundle spinnerViewBundle = (DatastoreBundle) spinnerView.getTag();
-        DatastoreBundle spinnerViewBundle = findBundleViewByNameId(mBundle, getRessourceName(spinnerView.getId()));
+        DatastoreBundle spinnerViewBundle = (DatastoreBundle) spinnerView.getTag();
+        //DatastoreBundle spinnerViewBundle = findBundleViewByNameId(mBundle, getRessourceName(spinnerView.getId()));
         if (selection.equals(spinnerViewBundle.getString("selection"))) {
             return; //Il n'a rien sélectionné, on sort.
         }
         //Cette selection peut affecter les 2 autres listes, on recalcule donc le bundle de la vue.
-        spinnerViewBundle.putString("selection", selection);
+        DatastoreBundle views = mBundle.getDatastoreBundle("views");
+        spinnerViewBundle.putString(isUserSelection ? "selection_user" : "selection", selection.equals("") ? "null" : selection);
+        views.putDatastoreBundle(getRessourceName(spinnerView.getId()), spinnerViewBundle);
+        mBundle.putDatastoreBundle("views", views);
+        mBundle.putBoolean("is_spinner_init_selection", !isUserSelection);
         mBundle = new RetrieveSertissageBundleAfterSelection().retrieveData(datastore, mBundle);
 
         //On mets à jours les vues avec les données du bundle
@@ -220,12 +222,14 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
 
 
     private void updateViewFromBundle(Datastore datastore) {
-        for (DatastoreBundle aViewBundle : mBundle.getDatastoreBundleArrayList("views")) {
+        DatastoreBundle views = mBundle.getDatastoreBundle("views");
+        for (String aViewBundleKey : views.keySet()) {
 
-            switch (aViewBundle.getString("id")) {
+            switch (aViewBundleKey) {
                 case "diametre_de_sertissage_message": {
                     View diametre_de_sertissage_message = findViewByName("diametre_de_sertissage_message");
                     int lastVisibility = diametre_de_sertissage_message.getVisibility();
+                    DatastoreBundle aViewBundle = views.getDatastoreBundle("diametre_de_sertissage_message");
                     diametre_de_sertissage_message.setVisibility(getIntVisibility(aViewBundle.getString("visibility")));
                     if (lastVisibility != diametre_de_sertissage_message.getVisibility()
                             && diametre_de_sertissage_message.getVisibility() == VISIBLE) {
@@ -238,6 +242,7 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
                 case "diametre_de_sertissage_no_data": {
                     View diametre_de_sertissage_no_data = findViewByName("diametre_de_sertissage_no_data");
                     int lastVisibility = diametre_de_sertissage_no_data.getVisibility();
+                    DatastoreBundle aViewBundle = views.getDatastoreBundle("diametre_de_sertissage_no_data");
                     diametre_de_sertissage_no_data.setVisibility(getIntVisibility(aViewBundle.getString("visibility")));
                     if (lastVisibility != diametre_de_sertissage_no_data.getVisibility()
                             && diametre_de_sertissage_no_data.getVisibility() == VISIBLE) {
@@ -250,6 +255,7 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
                 case "diametre_de_sertissage_main": {
                     View diametre_de_sertissage_main = findViewByName("diametre_de_sertissage_main");
                     int lastVisibility = diametre_de_sertissage_main.getVisibility();
+                    DatastoreBundle aViewBundle = views.getDatastoreBundle("diametre_de_sertissage_main");
                     diametre_de_sertissage_main.setVisibility(getIntVisibility(aViewBundle.getString("visibility")));
                     if (lastVisibility != diametre_de_sertissage_main.getVisibility()
                             && diametre_de_sertissage_main.getVisibility() == VISIBLE) {
@@ -264,6 +270,7 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
                     Spinner diametre_de_sertissage_tuyau = (Spinner) findViewByName("diametre_de_sertissage_tuyau");
                     StringSpinnerAdapter tubeAdapter =
                             ((StringSpinnerAdapter) diametre_de_sertissage_tuyau.getAdapter());
+                    DatastoreBundle aViewBundle = views.getDatastoreBundle("diametre_de_sertissage_tuyau");
                     tubeAdapter.swapData(aViewBundle.getStringArrayList("list"));
                     diametre_de_sertissage_tuyau
                             .setSelection(tubeAdapter.getPosition(aViewBundle.getString("selection")));
@@ -274,6 +281,7 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
                     Spinner diametre_de_sertissage_jupe = (Spinner) findViewByName("diametre_de_sertissage_jupe");
                     StringSpinnerAdapter jupeAdapter =
                             ((StringSpinnerAdapter) diametre_de_sertissage_jupe.getAdapter());
+                    DatastoreBundle aViewBundle = views.getDatastoreBundle("diametre_de_sertissage_jupe");
                     jupeAdapter.swapData(aViewBundle.getStringArrayList("list"));
                     diametre_de_sertissage_jupe
                             .setSelection(jupeAdapter.getPosition(aViewBundle.getString("selection")));
@@ -284,6 +292,7 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
                     Spinner diametre_de_sertissage_embout = (Spinner) findViewByName("diametre_de_sertissage_embout");
                     StringSpinnerAdapter emboutAdapter =
                             ((StringSpinnerAdapter) diametre_de_sertissage_embout.getAdapter());
+                    DatastoreBundle aViewBundle = views.getDatastoreBundle("diametre_de_sertissage_embout");
                     emboutAdapter.swapData(aViewBundle.getStringArrayList("list"));
                     diametre_de_sertissage_embout
                             .setSelection(emboutAdapter.getPosition(aViewBundle.getString("selection")));
@@ -292,12 +301,14 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
                 }
                 case "diametre_de_sertissage_value": {
                     TextView diametre_de_sertissage_value = (TextView) findViewByName("diametre_de_sertissage_value");
+                    DatastoreBundle aViewBundle = views.getDatastoreBundle("diametre_de_sertissage_value");
                     diametre_de_sertissage_value.setVisibility(getIntVisibility(aViewBundle.getString("visibility")));
                     diametre_de_sertissage_value.setText(aViewBundle.getString("text"));
                     break;
                 }
                 case "diametre_de_sertissage_send": {
                     View diametre_de_sertissage_send = findViewByName("diametre_de_sertissage_send");
+                    DatastoreBundle aViewBundle = views.getDatastoreBundle("diametre_de_sertissage_send");
                     diametre_de_sertissage_send.setEnabled(aViewBundle.getString("enabled").equals("true"));
                     break;
                 }
@@ -329,16 +340,6 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
         //Note : passer par un id sous forme de string comme ça permettra de restaurer la vue à partir du bundle facilement.
         //A voir si impact sur les perfs. Sinon passer par un int R.id.int
         return findViewById(mContext.getResources().getIdentifier(nameId, "id", mContext.getPackageName()));
-    }
-
-    private DatastoreBundle findBundleViewByNameId(DatastoreBundle viewBundle, String nameId) {
-        //TODO ne vaudrait il pas mieux trouver les bundle par des tags
-        for (DatastoreBundle aViewBundle : viewBundle.getDatastoreBundleArrayList("views")) {
-            if (aViewBundle.getString("id").equals(nameId)) {
-                return aViewBundle;
-            }
-        }
-        return null;
     }
 
     private String getRessourceName(int ressourceId) {

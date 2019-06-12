@@ -17,18 +17,36 @@ public class RetrieveSertissageBundleAfterSelection implements RetrieveDataInter
     public DatastoreBundle retrieveData(Datastore datastore, DatastoreBundle bundle) {
 
 
-        DatastoreBundle tuyauSpinnerBundle = findBundleViewByNameId(bundle, "diametre_de_sertissage_tuyau");
-        DatastoreBundle jupeSpinnerBundle = findBundleViewByNameId(bundle, "diametre_de_sertissage_jupe");
-        DatastoreBundle emboutSpinnerBundle = findBundleViewByNameId(bundle, "diametre_de_sertissage_embout");
+        //On recrée les listes de données qui seront dans les menus déroulants
+        DatastoreBundle tuyauSpinner =
+                bundle.getDatastoreBundle("views").getDatastoreBundle("diametre_de_sertissage_tuyau");
+        DatastoreBundle jupeSpinner =
+                bundle.getDatastoreBundle("views").getDatastoreBundle("diametre_de_sertissage_jupe");
+        DatastoreBundle emboutSpinner =
+                bundle.getDatastoreBundle("views").getDatastoreBundle("diametre_de_sertissage_embout");
 
-        String tuyauSelection = tuyauSpinnerBundle.getString("selection")
-                .equals("Selectionner un tuyau") ? null : tuyauSpinnerBundle.getString("selection");
+        String tuyauSelection;
+        String jupeSelection;
+        String emboutSelection;
+        if (bundle.getBoolean("is_spinner_init_selection")) {
+            tuyauSelection = tuyauSpinner.getString("selection")
+                    .equals("Selectionner un tuyau") ? null : tuyauSpinner.getString("selection");
 
-        String jupeSelection = jupeSpinnerBundle.getString("selection")
-                .equals("Selectionner un jupe") ? null : jupeSpinnerBundle.getString("selection");
+            jupeSelection = jupeSpinner.getString("selection")
+                    .equals("Selectionner un jupe") ? null : jupeSpinner.getString("selection");
 
-        String emboutSelection = emboutSpinnerBundle.getString("selection")
-                .equals("Selectionner un embout") ? null : emboutSpinnerBundle.getString("selection");
+            emboutSelection = emboutSpinner.getString("selection")
+                    .equals("Selectionner un embout") ? null : emboutSpinner.getString("selection");
+        } else {
+            tuyauSelection = tuyauSpinner.containsKey("selection_user") ?
+                    tuyauSpinner.getString("selection_user") : null;
+
+            jupeSelection = jupeSpinner.containsKey("selection_user")?
+                    jupeSpinner.getString("selection_user") : null;
+
+            emboutSelection = emboutSpinner.containsKey("selection_user")?
+                    emboutSpinner.getString("selection_user"): null;
+        }
 
         DatastoreBundle result;
         if (tuyauSelection == null && jupeSelection == null && emboutSelection == null) {
@@ -47,11 +65,11 @@ public class RetrieveSertissageBundleAfterSelection implements RetrieveDataInter
             selection.add("tuyau=?");
             selectionArgs.add(tuyauSelection);
         }
-        if (tuyauSelection != null) {
+        if (jupeSelection != null) {
             selection.add("jupe=?");
             selectionArgs.add(jupeSelection);
         }
-        if (tuyauSelection != null) {
+        if (emboutSelection != null) {
             selection.add("embout=?");
             selectionArgs.add(emboutSelection);
         }
@@ -77,25 +95,55 @@ public class RetrieveSertissageBundleAfterSelection implements RetrieveDataInter
         ArrayList<String> diametreDeSertissageArray = new ArrayList<>(diametreDeSertissage);
         bundle.putStringArrayList("diametre_de_sertissage", diametreDeSertissageArray);
 
+        //On mets à jour les vues
+        DatastoreBundle views = bundle.getDatastoreBundle("views");
 
-        //Si on a un diameètre :on l'affiche avec le bouton envoyer
-        DatastoreBundle diametre_de_sertissage_value = findBundleViewByNameId(bundle, "diametre_de_sertissage_value");
+        //On mets à jours les vues Spinner avec les nouvelles listes
+        ArrayList<String> tuyauSpinnerList = new ArrayList<>();
+        tuyauSpinnerList.addAll(removeNulls(bundle.getStringArrayList("tuyaux")));
+        tuyauSpinner.putString("id", "diametre_de_sertissage_tuyau");
+        tuyauSpinner.putStringArrayList("list", tuyauSpinnerList);
+        //TODO s'assurer qu'il y a au moins 1 élément
+        tuyauSpinner.putString("selection", tuyauSpinnerList.get(0)); //On selectionne le premier élément de la liste
+        views.putDatastoreBundle("diametre_de_sertissage_tuyau", tuyauSpinner);
+
+        ArrayList<String> jupeSpinnerList = new ArrayList<>();
+        jupeSpinnerList.addAll(removeNulls(bundle.getStringArrayList("jupes")));
+        jupeSpinner.putString("id", "diametre_de_sertissage_jupe");
+        jupeSpinner.putStringArrayList("list", jupeSpinnerList);
+        jupeSpinner.putString("selection", jupeSpinnerList.get(0));
+        views.putDatastoreBundle("diametre_de_sertissage_jupe", jupeSpinner);
+
+        ArrayList<String> emboutSpinnerList = new ArrayList<>();
+        emboutSpinnerList.addAll(removeNulls(bundle.getStringArrayList("embouts")));
+        emboutSpinner.putString("id", "diametre_de_sertissage_embout");
+        emboutSpinner.putStringArrayList("list", emboutSpinnerList);
+        emboutSpinner.putString("selection", emboutSpinnerList.get(0));
+        views.putDatastoreBundle("diametre_de_sertissage_embout", emboutSpinner);
+
+        //Si on a un diamètre :on l'affiche avec le bouton envoyer
+        DatastoreBundle diametre_de_sertissage_value = views.getDatastoreBundle("diametre_de_sertissage_value");
         diametre_de_sertissage_value.putString("visibility", diametreDeSertissageArray.size() == 1 ? "visible" : "invisible");
-        diametre_de_sertissage_value.putString("text", diametreDeSertissageArray.size() == 1 ? diametreDeSertissageArray.get(0) : "");
+        diametre_de_sertissage_value.putString("text",
+                diametreDeSertissageArray.size() == 1 ? diametreDeSertissageArray.get(0) : "");
+        views.putDatastoreBundle("diametre_de_sertissage_value", diametre_de_sertissage_value);
 
-        DatastoreBundle diametre_de_sertissage_send = findBundleViewByNameId(bundle, "diametre_de_sertissage_send");
+        DatastoreBundle diametre_de_sertissage_send = views.getDatastoreBundle("diametre_de_sertissage_send");
         diametre_de_sertissage_send.putString("enabled", diametreDeSertissageArray.size() == 1 ? "true" : "false");
+        views.putDatastoreBundle("diametre_de_sertissage_send", diametre_de_sertissage_send);
+
+        bundle.putDatastoreBundle("views", views);
 
         return bundle;
 
     }
 
-    private DatastoreBundle findBundleViewByNameId(DatastoreBundle viewBundle, String nameId) {
-        for (DatastoreBundle aViewBundle : viewBundle.getDatastoreBundleArrayList("views")) {
-            if (aViewBundle.getString("id").equals(nameId)) {
-                return aViewBundle;
-            }
+    private ArrayList<String> removeNulls(ArrayList<String> list) {
+        ArrayList<String> listWithoutNulls = new ArrayList<>();
+        for (String aString : list) {
+            listWithoutNulls.add(aString.equals("null") ? "" : aString);
         }
-        return null;
+        return listWithoutNulls;
     }
+
 }

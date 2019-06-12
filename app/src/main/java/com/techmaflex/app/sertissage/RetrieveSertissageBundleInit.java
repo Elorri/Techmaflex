@@ -21,19 +21,26 @@ public class RetrieveSertissageBundleInit implements RetrieveDataInterface {
         if (result.getDatastoreBundleArrayList("documents").isEmpty()) {
 
             //Le db n'a pas importé de csv
-            ArrayList<DatastoreBundle> views = new ArrayList<>();
-            DatastoreBundle no_csv_for_diametre_de_sertissage_view = new DatastoreBundle();
-            no_csv_for_diametre_de_sertissage_view.putString("id", "no_csv_for_diametre_de_sertissage");
-            no_csv_for_diametre_de_sertissage_view.putString("visibility", "visible");
-            views.add(no_csv_for_diametre_de_sertissage_view);
-            DatastoreBundle get_diametre_de_sertissage_view = new DatastoreBundle();
-            get_diametre_de_sertissage_view.putString("id", "get_diametre_de_sertissage");
-            get_diametre_de_sertissage_view.putString("visibility", "gone");
-            views.add(get_diametre_de_sertissage_view);
+            DatastoreBundle views = new DatastoreBundle();
+
+            DatastoreBundle noDataViewBundle = new DatastoreBundle();
+            noDataViewBundle.putString("id", "diametre_de_sertissage_no_data");
+            noDataViewBundle.putString("visibility", "visible");
+            views.putDatastoreBundle("diametre_de_sertissage_no_data", noDataViewBundle);
+
+            DatastoreBundle diametreSertissageViewBundle = new DatastoreBundle();
+            diametreSertissageViewBundle.putString("id", "diametre_de_sertissage_main");
+            diametreSertissageViewBundle.putString("visibility", "gone");
+            views.putDatastoreBundle("diametre_de_sertissage_main", diametreSertissageViewBundle);
+
+            DatastoreBundle messageViewBundle = new DatastoreBundle();
+            messageViewBundle.putString("id", "diametre_de_sertissage_message");
+            messageViewBundle.putString("visibility", "gone");
+            views.putDatastoreBundle("diametre_de_sertissage_message", messageViewBundle);
 
             //TODO Ajouter le texte des boutons et autres ici plutôt que dans le xml
 
-            b.putDatastoreArrayList("views", views);
+            b.putDatastoreBundle("views", views);
             return b;
         }
 
@@ -43,59 +50,75 @@ public class RetrieveSertissageBundleInit implements RetrieveDataInterface {
         b = new RetrieveInitSpinnerLists().retrieveData(datastore, null);
 
         //On prépare les bundleView
-        ArrayList<DatastoreBundle> views = new ArrayList<>();
+        DatastoreBundle views = new DatastoreBundle();
 
         //On affiche la vue main et on cache la vue no_data
-        DatastoreBundle no_csv_for_diametre_de_sertissage_view = new DatastoreBundle();
-        no_csv_for_diametre_de_sertissage_view.putString("id", "diametre_de_sertissage_no_data");
-        no_csv_for_diametre_de_sertissage_view.putString("visibility", "gone");
-        views.add(no_csv_for_diametre_de_sertissage_view);
+        DatastoreBundle noDataViewBundle = new DatastoreBundle();
+        noDataViewBundle.putString("id", "diametre_de_sertissage_no_data");
+        noDataViewBundle.putString("visibility", "gone");
+        views.putDatastoreBundle("diametre_de_sertissage_no_data", noDataViewBundle);
+
         DatastoreBundle get_diametre_de_sertissage_view = new DatastoreBundle();
         get_diametre_de_sertissage_view.putString("id", "diametre_de_sertissage_main");
         get_diametre_de_sertissage_view.putString("visibility", "visible");
-        views.add(get_diametre_de_sertissage_view);
+        views.putDatastoreBundle("diametre_de_sertissage_main", get_diametre_de_sertissage_view);
+
+        DatastoreBundle messageViewBundle = new DatastoreBundle();
+        messageViewBundle.putString("id", "diametre_de_sertissage_message");
+        messageViewBundle.putString("visibility", "gone");
+        views.putDatastoreBundle("diametre_de_sertissage_message", messageViewBundle);
 
         //On affiche le diametre et le bouton envoyer
-        DatastoreBundle diametre_de_sertissage_value = new DatastoreBundle();
-        diametre_de_sertissage_value.putString("id", "diametre_de_sertissage_value");
-        diametre_de_sertissage_value.putString("visibility", "invisible");
-        diametre_de_sertissage_value.putString("text", "");
-        views.add(diametre_de_sertissage_value);
-        DatastoreBundle diametre_de_sertissage_send = new DatastoreBundle();
-        diametre_de_sertissage_send.putString("id", "diametre_de_sertissage_send");
-        diametre_de_sertissage_send.putString("enabled", "false");
-        views.add(diametre_de_sertissage_send);
+
+        DatastoreBundle diametreTextview = new DatastoreBundle();
+        diametreTextview.putString("id", "diametre_de_sertissage_value");
+        diametreTextview.putString("visibility", "invisible");
+        diametreTextview.putString("text", "");
+        views.putDatastoreBundle("diametre_de_sertissage_value", diametreTextview);
+
+        DatastoreBundle diametreButton = new DatastoreBundle();
+        diametreButton.putString("id", "diametre_de_sertissage_send");
+        diametreButton.putString("enabled", "false");
+        views.putDatastoreBundle("diametre_de_sertissage_send", diametreButton);
 
         //On prépare les données que devront contenir les menus déroulants
+        DatastoreBundle tuyauSpinner = new DatastoreBundle();
         ArrayList<String> tuyauSpinnerList = new ArrayList<>();
         tuyauSpinnerList.add("Selectionner un tuyau");
-        tuyauSpinnerList.addAll(b.getStringArrayList("tuyaux"));
-        DatastoreBundle tuyauSpinner = new DatastoreBundle();
+        tuyauSpinnerList.addAll(removeNulls(b.getStringArrayList("tuyaux")));
         tuyauSpinner.putString("id", "diametre_de_sertissage_tuyau");
         tuyauSpinner.putStringArrayList("list", tuyauSpinnerList);
         tuyauSpinner.putString("selection", "Selectionner un tuyau"); //TODO est-ce vraiment nécessaire ?
-        views.add(tuyauSpinner);
+        views.putDatastoreBundle("diametre_de_sertissage_tuyau", tuyauSpinner);
 
-
+        DatastoreBundle jupeSpinner = new DatastoreBundle();
         ArrayList<String> jupeSpinnerList = new ArrayList<>();
         jupeSpinnerList.add("Selectionner un jupe");
-        jupeSpinnerList.addAll(b.getStringArrayList("jupes"));
-        DatastoreBundle jupeSpinner = new DatastoreBundle();
+        jupeSpinnerList.addAll(removeNulls(b.getStringArrayList("jupes")));
         jupeSpinner.putString("id", "diametre_de_sertissage_jupe");
         jupeSpinner.putStringArrayList("list", jupeSpinnerList);
         jupeSpinner.putString("selection", "Selectionner un jupe"); //TODO est-ce vraiment nécessaire ?
-        views.add(jupeSpinner);
+        views.putDatastoreBundle("diametre_de_sertissage_jupe", jupeSpinner);
 
+        DatastoreBundle emboutSpinner = new DatastoreBundle();
         ArrayList<String> emboutSpinnerList = new ArrayList<>();
         emboutSpinnerList.add("Selectionner un embout");
-        emboutSpinnerList.addAll(b.getStringArrayList("embouts"));
-        DatastoreBundle emboutSpinner = new DatastoreBundle();
+        emboutSpinnerList.addAll(removeNulls(b.getStringArrayList("embouts")));
         emboutSpinner.putString("id", "diametre_de_sertissage_embout");
         emboutSpinner.putStringArrayList("list", emboutSpinnerList);
         emboutSpinner.putString("selection", "Selectionner un embout"); //TODO est-ce vraiment nécessaire ?
-        views.add(emboutSpinner);
+        views.putDatastoreBundle("diametre_de_sertissage_embout", emboutSpinner);
 
-        b.putDatastoreArrayList("views", views);
+        b.putDatastoreBundle("views", views);
+
         return b;
+    }
+
+    private ArrayList<String> removeNulls(ArrayList<String> list) {
+        ArrayList<String> listWithoutNulls = new ArrayList<>();
+        for (String aString : list) {
+            listWithoutNulls.add(aString.equals("null") ? "" : aString);
+        }
+        return listWithoutNulls;
     }
 }

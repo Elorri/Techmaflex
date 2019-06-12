@@ -55,75 +55,75 @@ public class DatastoreAndroidSQLite extends SQLiteOpenHelper implements Datastor
         DatastoreBundle documents = new DatastoreBundleUtil().fromJSONStringToBundle("{\n" +
                 "  \"documents\": [\n" +
                 "    {\n" +
-                "      \"tuyau\": \"\",\n" +
-                "      \"jupe\": \" \",\n" +
+                "      \"tuyau\": \"null\",\n" +
+                "      \"jupe\": \"null\",\n" +
                 "      \"embout\": \"MF\",\n" +
                 "      \"diametre_de_sertissage\": \"12,4\"\n" +
                 "    },\n" +
                 "    {\n" +
-                "      \"tuyau\": \"\",\n" +
-                "      \"jupe\": \" \",\n" +
+                "      \"tuyau\": \"null\",\n" +
+                "      \"jupe\": \"null\",\n" +
                 "      \"embout\": \"MF-KML\",\n" +
                 "      \"diametre_de_sertissage\": \"12,8\"\n" +
                 "    },\n" +
                 "    {\n" +
-                "      \"tuyau\": \"\",\n" +
+                "      \"tuyau\": \"null\",\n" +
                 "      \"jupe\": \"M00120-04\",\n" +
-                "      \"embout\": \" \",\n" +
+                "      \"embout\": \"null\",\n" +
                 "      \"diametre_de_sertissage\": \"13,2\"\n" +
                 "    },\n" +
                 "    {\n" +
-                "      \"tuyau\": \"\",\n" +
+                "      \"tuyau\": \"null\",\n" +
                 "      \"jupe\": \"M00120-04\",\n" +
                 "      \"embout\": \"MF\",\n" +
                 "      \"diametre_de_sertissage\": \"13,6\"\n" +
                 "    },\n" +
                 "    {\n" +
-                "      \"tuyau\": \"\",\n" +
+                "      \"tuyau\": \"null\",\n" +
                 "      \"jupe\": \"M00120-04\",\n" +
                 "      \"embout\": \"MF-KML\",\n" +
                 "      \"diametre_de_sertissage\": \"14\"\n" +
                 "    },\n" +
                 "    {\n" +
-                "      \"tuyau\": \"\",\n" +
+                "      \"tuyau\": \"null\",\n" +
                 "      \"jupe\": \"M00120-04KM\",\n" +
-                "      \"embout\": \" \",\n" +
+                "      \"embout\": \"null\",\n" +
                 "      \"diametre_de_sertissage\": \"14,4\"\n" +
                 "    },\n" +
                 "    {\n" +
-                "      \"tuyau\": \"\",\n" +
+                "      \"tuyau\": \"null\",\n" +
                 "      \"jupe\": \"M00120-04KM\",\n" +
                 "      \"embout\": \"MF\",\n" +
                 "      \"diametre_de_sertissage\": \"14,8\"\n" +
                 "    },\n" +
                 "    {\n" +
-                "      \"tuyau\": \"\",\n" +
+                "      \"tuyau\": \"null\",\n" +
                 "      \"jupe\": \"M00120-04KM\",\n" +
                 "      \"embout\": \"MF-KML\",\n" +
                 "      \"diametre_de_sertissage\": \"15,2\"\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"tuyau\": \"EQUATOR/1 (BLUE)\",\n" +
-                "      \"jupe\": \" \",\n" +
-                "      \"embout\": \" \",\n" +
+                "      \"jupe\": \"null\",\n" +
+                "      \"embout\": \"null\",\n" +
                 "      \"diametre_de_sertissage\": \"15,6\"\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"tuyau\": \"EQUATOR/1 (BLUE)\",\n" +
-                "      \"jupe\": \" \",\n" +
+                "      \"jupe\": \"null\",\n" +
                 "      \"embout\": \"MF\",\n" +
                 "      \"diametre_de_sertissage\": \"16\"\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"tuyau\": \"EQUATOR/1 (BLUE)\",\n" +
-                "      \"jupe\": \" \",\n" +
+                "      \"jupe\": \"null\",\n" +
                 "      \"embout\": \"MF-KML\",\n" +
                 "      \"diametre_de_sertissage\": \"16,4\"\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"tuyau\": \"EQUATOR/1 (BLUE)\",\n" +
                 "      \"jupe\": \"M00120-04\",\n" +
-                "      \"embout\": \" \",\n" +
+                "      \"embout\": \"null\",\n" +
                 "      \"diametre_de_sertissage\": \"16,8\"\n" +
                 "    },\n" +
                 "    {\n" +
@@ -153,7 +153,7 @@ public class DatastoreAndroidSQLite extends SQLiteOpenHelper implements Datastor
                 "    {\n" +
                 "      \"tuyau\": \"EQUATOR/1 (BLUE)\",\n" +
                 "      \"jupe\": \"M00120-04KM\",\n" +
-                "      \"embout\": \" \",\n" +
+                "      \"embout\": \"null\",\n" +
                 "      \"diametre_de_sertissage\": \"18\"\n" +
                 "    },\n" +
                 "    {\n" +
@@ -176,26 +176,26 @@ public class DatastoreAndroidSQLite extends SQLiteOpenHelper implements Datastor
                 "    },\n" +
                 "    {\n" +
                 "      \"tuyau\": \"ETERNITY/2\",\n" +
-                "      \"jupe\": \" \",\n" +
-                "      \"embout\": \" \",\n" +
+                "      \"jupe\": \"null\",\n" +
+                "      \"embout\": \"null\",\n" +
                 "      \"diametre_de_sertissage\": \"19,2\"\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"tuyau\": \"ETERNITY/2\",\n" +
-                "      \"jupe\": \" \",\n" +
+                "      \"jupe\": \"null\",\n" +
                 "      \"embout\": \"MF\",\n" +
                 "      \"diametre_de_sertissage\": \"19,6\"\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"tuyau\": \"ETERNITY/2\",\n" +
-                "      \"jupe\": \" \",\n" +
+                "      \"jupe\": \"null\",\n" +
                 "      \"embout\": \"MF-KML\",\n" +
                 "      \"diametre_de_sertissage\": \"20\"\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"tuyau\": \"ETERNITY/2\",\n" +
                 "      \"jupe\": \"M00120-04\",\n" +
-                "      \"embout\": \" \",\n" +
+                "      \"embout\": \"null\",\n" +
                 "      \"diametre_de_sertissage\": \"20,4\"\n" +
                 "    },\n" +
                 "    {\n" +
@@ -213,7 +213,7 @@ public class DatastoreAndroidSQLite extends SQLiteOpenHelper implements Datastor
                 "    {\n" +
                 "      \"tuyau\": \"ETERNITY/2\",\n" +
                 "      \"jupe\": \"M00120-04KM\",\n" +
-                "      \"embout\": \" \",\n" +
+                "      \"embout\": \"null\",\n" +
                 "      \"diametre_de_sertissage\": \"21,6\"\n" +
                 "    },\n" +
                 "    {\n" +
@@ -230,26 +230,26 @@ public class DatastoreAndroidSQLite extends SQLiteOpenHelper implements Datastor
                 "    },\n" +
                 "    {\n" +
                 "      \"tuyau\": \"GOLDENISO/21 ANTIWEAR\",\n" +
-                "      \"jupe\": \" \",\n" +
-                "      \"embout\": \" \",\n" +
+                "      \"jupe\": \"null\",\n" +
+                "      \"embout\": \"null\",\n" +
                 "      \"diametre_de_sertissage\": \"22,8\"\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"tuyau\": \"GOLDENISO/21 ANTIWEAR\",\n" +
-                "      \"jupe\": \" \",\n" +
+                "      \"jupe\": \"null\",\n" +
                 "      \"embout\": \"MF\",\n" +
                 "      \"diametre_de_sertissage\": \"23,2\"\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"tuyau\": \"GOLDENISO/21 ANTIWEAR\",\n" +
-                "      \"jupe\": \" \",\n" +
+                "      \"jupe\": \"null\",\n" +
                 "      \"embout\": \"MF-KML\",\n" +
                 "      \"diametre_de_sertissage\": \"23,6\"\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"tuyau\": \"GOLDENISO/21 ANTIWEAR\",\n" +
                 "      \"jupe\": \"M00120-04\",\n" +
-                "      \"embout\": \" \",\n" +
+                "      \"embout\": \"null\",\n" +
                 "      \"diametre_de_sertissage\": \"24\"\n" +
                 "    },\n" +
                 "    {\n" +
@@ -267,7 +267,7 @@ public class DatastoreAndroidSQLite extends SQLiteOpenHelper implements Datastor
                 "    {\n" +
                 "      \"tuyau\": \"GOLDENISO/21 ANTIWEAR\",\n" +
                 "      \"jupe\": \"M00120-04KM\",\n" +
-                "      \"embout\": \" \",\n" +
+                "      \"embout\": \"null\",\n" +
                 "      \"diametre_de_sertissage\": \"25,2\"\n" +
                 "    },\n" +
                 "    {\n" +
@@ -281,6 +281,24 @@ public class DatastoreAndroidSQLite extends SQLiteOpenHelper implements Datastor
                 "      \"jupe\": \"M00120-04KM\",\n" +
                 "      \"embout\": \"MF-KML\",\n" +
                 "      \"diametre_de_sertissage\": \"26\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"tuyau\": \"EQUATOR/1 (RED)\",\n" +
+                "      \"jupe\": \"M00120-04KM\",\n" +
+                "      \"embout\": \"MF-KML\",\n" +
+                "      \"diametre_de_sertissage\": \"27,1\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"tuyau\": \"EQUATOR/1 (BLUE)\",\n" +
+                "      \"jupe\": \"M00120-05KM\",\n" +
+                "      \"embout\": \"MF-KML\",\n" +
+                "      \"diametre_de_sertissage\": \"27,2\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"tuyau\": \"EQUATOR/1 (BLUE)\",\n" +
+                "      \"jupe\": \"M00120-04KM\",\n" +
+                "      \"embout\": \"MF-KML1\",\n" +
+                "      \"diametre_de_sertissage\": \"27,3\"\n" +
                 "    }\n" +
                 "  ]\n" +
                 "}");
