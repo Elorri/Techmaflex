@@ -42,11 +42,11 @@ public class RetrieveSertissageBundleAfterSelection implements RetrieveDataInter
             tuyauSelection = tuyauSpinner.containsKey("selection_user") ?
                     tuyauSpinner.getString("selection_user") : null;
 
-            jupeSelection = jupeSpinner.containsKey("selection_user")?
+            jupeSelection = jupeSpinner.containsKey("selection_user") ?
                     jupeSpinner.getString("selection_user") : null;
 
-            emboutSelection = emboutSpinner.containsKey("selection_user")?
-                    emboutSpinner.getString("selection_user"): null;
+            emboutSelection = emboutSpinner.containsKey("selection_user") ?
+                    emboutSpinner.getString("selection_user") : null;
         }
 
         DatastoreBundle result;
@@ -79,21 +79,21 @@ public class RetrieveSertissageBundleAfterSelection implements RetrieveDataInter
                 null, new StringUtil().delim(selection, " and "),
                 new ArrayUtil().fromArrayListToArray(selectionArgs), null, null, null, null);
 
-        LinkedHashSet<String> tuyauOptions = new LinkedHashSet<>();
+        //Pour éviter de mettre un bouton réinitialiser, le menu tuyau contient en permanence toutes les options.
+        ArrayList<String> tuyauArrayList = new RetrieveTuyauxSpinnerList()
+                .retrieveData(datastore, null).getStringArrayList("tuyaux");
+
         LinkedHashSet<String> jupeOptions = new LinkedHashSet<>();
         LinkedHashSet<String> emboutOptions = new LinkedHashSet<>();
         LinkedHashSet<String> diametreDeSertissage = new LinkedHashSet<>();
         for (DatastoreBundle aResult : result.getDatastoreBundleArrayList("documents")) {
-            tuyauOptions.add(aResult.getString("tuyau"));
             jupeOptions.add(aResult.getString("jupe"));
             emboutOptions.add(aResult.getString("embout"));
             diametreDeSertissage.add(aResult.getString("diametre_de_sertissage"));
         }
 
-        ArrayList<String> tuyauArrayList = new ArrayList<>(tuyauOptions);
         ArrayList<String> jupeArrayList = new ArrayList<>(jupeOptions);
         ArrayList<String> emboutArrayList = new ArrayList<>(emboutOptions);
-        Collections.sort(tuyauArrayList);
         Collections.sort(jupeArrayList);
         Collections.sort(emboutArrayList);
         bundle.putStringArrayList("tuyaux", tuyauArrayList);
@@ -108,34 +108,38 @@ public class RetrieveSertissageBundleAfterSelection implements RetrieveDataInter
         //On mets à jours les vues Spinner avec les nouvelles listes
         // Note : on est obligé d'ajouter les options 'selectionner' car bizarement dès lors qu'il y a 2 item, selectionner le premier, ne produit rien. Il ne passe pas dans le code. Pour parrer à cela, il faudrait faire un Spinner avec un premier item caché cad un layout très petit voir gone. Comme les besoins du client spécifient qu'il faut l'option sélectionner sur chaque menu. On a pas besoin de faire cela. Mais il serait intéressant de se faire une custom version du spinner.
         ArrayList<String> tuyauSpinnerList = new ArrayList<>();
-        if(bundle.getStringArrayList("tuyaux").size()>1){
+        if (bundle.getStringArrayList("tuyaux").size() > 1) {
             tuyauSpinnerList.add("Selectionner le tuyau");
         }
         tuyauSpinnerList.addAll(removeNulls(bundle.getStringArrayList("tuyaux")));
         tuyauSpinner.putString("id", "diametre_de_sertissage_tuyau");
         tuyauSpinner.putStringArrayList("list", tuyauSpinnerList);
         //TODO s'assurer qu'il y a au moins 1 élément
-        tuyauSpinner.putString("selection", tuyauSpinnerList.get(0)); //On selectionne le premier élément de la liste
+
+        tuyauSpinner.putString("selection", tuyauSpinner.containsKey("selection_user") ?
+                tuyauSpinner.getString("selection_user") : tuyauSpinnerList.get(0)); 
         views.putDatastoreBundle("diametre_de_sertissage_tuyau", tuyauSpinner);
 
         ArrayList<String> jupeSpinnerList = new ArrayList<>();
-        if(bundle.getStringArrayList("jupes").size()>1){
+        if (bundle.getStringArrayList("jupes").size() > 1) {
             jupeSpinnerList.add("Selectionner la jupe");
         }
         jupeSpinnerList.addAll(removeNulls(bundle.getStringArrayList("jupes")));
         jupeSpinner.putString("id", "diametre_de_sertissage_jupe");
         jupeSpinner.putStringArrayList("list", jupeSpinnerList);
-        jupeSpinner.putString("selection", jupeSpinnerList.get(0));
+        jupeSpinner.putString("selection", jupeSpinner.containsKey("selection_user") ?
+                jupeSpinner.getString("selection_user") : jupeSpinnerList.get(0));
         views.putDatastoreBundle("diametre_de_sertissage_jupe", jupeSpinner);
 
         ArrayList<String> emboutSpinnerList = new ArrayList<>();
-        if(bundle.getStringArrayList("embouts").size()>1){
+        if (bundle.getStringArrayList("embouts").size() > 1) {
             emboutSpinnerList.add("Selectionner l'embout");
         }
         emboutSpinnerList.addAll(removeNulls(bundle.getStringArrayList("embouts")));
         emboutSpinner.putString("id", "diametre_de_sertissage_embout");
         emboutSpinner.putStringArrayList("list", emboutSpinnerList);
-        emboutSpinner.putString("selection", emboutSpinnerList.get(0));
+        emboutSpinner.putString("selection", emboutSpinner.containsKey("selection_user") ?
+                emboutSpinner.getString("selection_user") : emboutSpinnerList.get(0));
         views.putDatastoreBundle("diametre_de_sertissage_embout", emboutSpinner);
 
         //Si on a un diamètre :on l'affiche avec le bouton envoyer

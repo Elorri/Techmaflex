@@ -169,22 +169,36 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
             }
         });
 
-        //Bouton reset
-        View resetButton = findViewByName("diametre_de_sertissage_reset");
-        resetButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onInit(datastore, null);
-            }
-        });
-
         //Mise à jour des vues à partir du bundle
         updateViewFromBundle(datastore);
     }
 
     private void onTuyauSelected(Datastore datastore, Spinner spinnerView, int position) {
+        //Verif si la modif est demandée par l'utilisateur ou non
         tuyauSelectCount++;
         boolean isFirstTuyauFirstSelection = tuyauSelectCount <= 1;
+
+        //Si l'utilisateur change d'item dans ce menu (qui contient toujours toutes les options),
+        // on supprime les selections qu'il aurait pu faire dans les autres menus.
+        DatastoreBundle views = mBundle.getDatastoreBundle("views");
+        DatastoreBundle tuyauBundle = views.getDatastoreBundle("diametre_de_sertissage_tuyau");
+        String selection = (String) spinnerView.getAdapter().getItem(position);
+        if(!isFirstTuyauFirstSelection && !selection.equals(tuyauBundle.getString("selection"))){
+            DatastoreBundle jupeBundle = views.getDatastoreBundle("diametre_de_sertissage_jupe");
+            if(jupeBundle.containsKey("selection_user")){
+                jupeBundle.remove("selection_user");
+                //TODO modifier le datastore de façon a éviter d'avoir à faire ça à chaque fois
+                views.putDatastoreBundle("diametre_de_sertissage_jupe", jupeBundle);
+                mBundle.putDatastoreBundle("views", views);
+            }
+            DatastoreBundle emboutBundle = views.getDatastoreBundle("diametre_de_sertissage_embout");
+            if(emboutBundle.containsKey("selection_user")){
+                emboutBundle.remove("selection_user");
+                //TODO modifier le datastore de façon a éviter d'avoir à faire ça à chaque fois
+                views.putDatastoreBundle("diametre_de_sertissage_embout", emboutBundle);
+                mBundle.putDatastoreBundle("views", views);
+            }
+        }
         onSpinnerItemSelected(datastore, spinnerView, position, !isFirstTuyauFirstSelection);
     }
 
@@ -310,9 +324,6 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
                     View diametre_de_sertissage_send = findViewByName("diametre_de_sertissage_send");
                     DatastoreBundle aViewBundle = views.getDatastoreBundle("diametre_de_sertissage_send");
                     diametre_de_sertissage_send.setEnabled(aViewBundle.getString("enabled").equals("true"));
-                    break;
-                }
-                case "diametre_de_sertissage_reset": {
                     break;
                 }
                 default:

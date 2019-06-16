@@ -167,14 +167,6 @@
                 android:padding="16dp"
                 android:layout_margin="8dp"/>
 
-            <Button
-                android:id="@+id/diametre_de_sertissage_reset"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="16dp"
-                android:text="@string/reset"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
         </LinearLayout>
 
     </FrameLayout>

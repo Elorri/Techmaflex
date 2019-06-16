@@ -289,6 +289,12 @@ public class DatastoreAndroidSQLite extends SQLiteOpenHelper implements Datastor
                 "      \"diametre_de_sertissage\": \"27,1\"\n" +
                 "    },\n" +
                 "    {\n" +
+                "      \"tuyau\": \"EQUATOR/1 (PINK)\",\n" +
+                "      \"jupe\": \"null\",\n" +
+                "      \"embout\": \"null\",\n" +
+                "      \"diametre_de_sertissage\": \"19\"\n" +
+                "    },\n" +
+                "    {\n" +
                 "      \"tuyau\": \"EQUATOR/1 (BLUE)\",\n" +
                 "      \"jupe\": \"M00120-05KM\",\n" +
                 "      \"embout\": \"MF-KML\",\n" +
