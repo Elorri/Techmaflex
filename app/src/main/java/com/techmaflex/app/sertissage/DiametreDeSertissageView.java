@@ -209,6 +209,7 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
     }
 
     private void adjustSpinnersWidth(float largestItemViewDpSize) {
+        //La taille est trop petite si on met en dp et trop grande en Px. Pas très concluant.
         mTuyauSpinner.getLayoutParams().width =  (int) new LayoutUtil().toPx(mContext, largestItemViewDpSize);
         ((StringSpinnerAdapter) mTuyauSpinner.getAdapter()).setAllItemsWidth((int) largestItemViewDpSize);
 
