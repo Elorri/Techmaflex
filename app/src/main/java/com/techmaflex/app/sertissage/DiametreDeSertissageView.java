@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -16,6 +17,7 @@ import com.techmaflex.app.data.Datastore;
 import com.techmaflex.app.data.DatastoreBundle;
 import com.techmaflex.app.navigation.ViewCallback;
 import com.techmaflex.app.navigation.ViewInterface;
+import com.techmaflex.app.util.LayoutUtil;
 
 import java.util.ArrayList;
 
@@ -26,6 +28,10 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
     private int tuyauSelectCount;
     private int jupeSelectCount;
     private int emboutSelectCount;
+
+    private Spinner mTuyauSpinner;
+    private Spinner mJupeSpinner;
+    private Spinner mEmboutSpinner;
 
     public DiametreDeSertissageView(@NonNull Context context) {
         this(context, null);
@@ -121,13 +127,21 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
 
 
         //Spinner tuyau
-        final Spinner tuyauSpinner = (Spinner) findViewByName("diametre_de_sertissage_tuyau");
-        final StringSpinnerAdapter tuyauAdapter = new StringSpinnerAdapter(mContext, new ArrayList<String>());
-        tuyauSpinner.setAdapter(tuyauAdapter);
-        tuyauSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mTuyauSpinner = (Spinner) findViewByName("diametre_de_sertissage_tuyau");
+        final StringSpinnerAdapter tuyauAdapter = new StringSpinnerAdapter(mContext, new ArrayList<String>(), new StringSpinnerAdapter.Callback() {
+            @Override
+            public void onLargestItemViewPxChanged(float largestItemViewPxSize) {
+                Log.e("Tech", Thread.currentThread().getStackTrace()[2] +
+                        "spinner : " + "tuyau" +
+                        " largestItemViewPxSize : " + largestItemViewPxSize);
+                adjustSpinnersWidth(largestItemViewPxSize);
+            }
+        }, "tuyau");
+        mTuyauSpinner.setAdapter(tuyauAdapter);
+        mTuyauSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                onTuyauSelected(datastore, tuyauSpinner, position);
+                onTuyauSelected(datastore, mTuyauSpinner, position);
             }
 
             @Override
@@ -137,16 +151,24 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
         });
 
         //Spinner jupe
-        final Spinner jupeSpinner = (Spinner) findViewByName("diametre_de_sertissage_jupe");
+        mJupeSpinner = (Spinner) findViewByName("diametre_de_sertissage_jupe");
         StringSpinnerAdapter jupeAdapter =
-                new StringSpinnerAdapter(mContext, new ArrayList<String>());
-        jupeSpinner.setAdapter(jupeAdapter);
-        jupeSpinner.setEnabled(mBundle.getDatastoreBundle("views")
+                new StringSpinnerAdapter(mContext, new ArrayList<String>(), new StringSpinnerAdapter.Callback() {
+                    @Override
+                    public void onLargestItemViewPxChanged(float largestItemViewPxSize) {
+                        Log.e("Tech", Thread.currentThread().getStackTrace()[2] +
+                                "spinner : " + "jupe" +
+                                " largestItemViewPxSize : " + largestItemViewPxSize);
+                        adjustSpinnersWidth(largestItemViewPxSize);
+                    }
+                }, "jupe");
+        mJupeSpinner.setAdapter(jupeAdapter);
+        mJupeSpinner.setEnabled(mBundle.getDatastoreBundle("views")
                 .getDatastoreBundle("diametre_de_sertissage_jupe").getString("enabled").equals("true"));
-        jupeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mJupeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                onJupeSelected(datastore, jupeSpinner, position);
+                onJupeSelected(datastore, mJupeSpinner, position);
             }
 
             @Override
@@ -156,15 +178,24 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
         });
 
         //Spinner embout
-        final Spinner emboutSpinner = (Spinner) findViewByName("diametre_de_sertissage_embout");
-        StringSpinnerAdapter emboutAdapter = new StringSpinnerAdapter(mContext, new ArrayList<String>());
-        emboutSpinner.setAdapter(emboutAdapter);
-        emboutSpinner.setEnabled(mBundle.getDatastoreBundle("views")
+        mEmboutSpinner = (Spinner) findViewByName("diametre_de_sertissage_embout");
+        StringSpinnerAdapter emboutAdapter = new StringSpinnerAdapter(mContext, new ArrayList<String>(), new StringSpinnerAdapter.Callback() {
+            @Override
+            public void onLargestItemViewPxChanged(float largestItemViewPxSize) {
+                Log.e("Tech", Thread.currentThread().getStackTrace()[2] +
+                        "spinner : " + "embout" +
+                        " largestItemViewPxSize : " + largestItemViewPxSize);
+                adjustSpinnersWidth(largestItemViewPxSize);
+                adjustSpinnersWidth(largestItemViewPxSize);
+            }
+        }, "embout");
+        mEmboutSpinner.setAdapter(emboutAdapter);
+        mEmboutSpinner.setEnabled(mBundle.getDatastoreBundle("views")
                 .getDatastoreBundle("diametre_de_sertissage_embout").getString("enabled").equals("true"));
-        emboutSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mEmboutSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                onEmboutSelected(datastore, emboutSpinner, position);
+                onEmboutSelected(datastore, mEmboutSpinner, position);
             }
 
             @Override
@@ -175,6 +206,17 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
 
         //Mise à jour des vues à partir du bundle
         updateViewFromBundle(datastore);
+    }
+
+    private void adjustSpinnersWidth(float largestItemViewDpSize) {
+        mTuyauSpinner.getLayoutParams().width =  (int) new LayoutUtil().toPx(mContext, largestItemViewDpSize);
+        ((StringSpinnerAdapter) mTuyauSpinner.getAdapter()).setAllItemsWidth((int) largestItemViewDpSize);
+
+        mJupeSpinner.getLayoutParams().width = (int) new LayoutUtil().toPx(mContext, largestItemViewDpSize);
+        ((StringSpinnerAdapter) mJupeSpinner.getAdapter()).setAllItemsWidth((int) largestItemViewDpSize);
+
+        mEmboutSpinner.getLayoutParams().width = (int) new LayoutUtil().toPx(mContext, largestItemViewDpSize);
+        ((StringSpinnerAdapter) mEmboutSpinner.getAdapter()).setAllItemsWidth((int) largestItemViewDpSize);
     }
 
     private void onTuyauSelected(Datastore datastore, Spinner spinnerView, int position) {

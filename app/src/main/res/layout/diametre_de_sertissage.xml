@@ -146,26 +146,21 @@
                 android:id="@+id/diametre_de_sertissage_tuyau"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="16dp"
-                android:layout_margin="8dp"/>
+                android:layout_gravity="left"
+        />
 
             <Spinner
                 android:id="@+id/diametre_de_sertissage_jupe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="8dp"
-                android:padding="16dp"
-                android:gravity="center"/>
+                android:layout_gravity="left"/>
 
             <Spinner
                 android:id="@+id/diametre_de_sertissage_embout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="16dp"
-                android:layout_margin="8dp"/>
+                android:layout_gravity="left"
+           />
 
         </LinearLayout>
 

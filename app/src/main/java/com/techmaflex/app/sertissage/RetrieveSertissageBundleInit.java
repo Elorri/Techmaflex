@@ -84,30 +84,30 @@ public class RetrieveSertissageBundleInit implements RetrieveDataInterface {
         //On prépare les données que devront contenir les menus déroulants
         DatastoreBundle tuyauSpinner = new DatastoreBundle();
         ArrayList<String> tuyauSpinnerList = new ArrayList<>();
-        tuyauSpinnerList.add("Selectionner le tuyau");
+        tuyauSpinnerList.add("Sélectionner le tuyau");
         tuyauSpinnerList.addAll(removeNulls(b.getStringArrayList("tuyaux")));
         tuyauSpinner.putString("id", "diametre_de_sertissage_tuyau");
         tuyauSpinner.putStringArrayList("list", tuyauSpinnerList);
-        tuyauSpinner.putString("selection", "Selectionner le tuyau"); //TODO est-ce vraiment nécessaire ?
+        tuyauSpinner.putString("selection", "Sélectionner le tuyau"); //TODO est-ce vraiment nécessaire ?
         views.putDatastoreBundle("diametre_de_sertissage_tuyau", tuyauSpinner);
 
         DatastoreBundle jupeSpinner = new DatastoreBundle();
         ArrayList<String> jupeSpinnerList = new ArrayList<>();
-        jupeSpinnerList.add("Selectionner la jupe");
+        jupeSpinnerList.add("Sélectionner la jupe");
         jupeSpinnerList.addAll(removeNulls(b.getStringArrayList("jupes")));
         jupeSpinner.putString("id", "diametre_de_sertissage_jupe");
         jupeSpinner.putStringArrayList("list", jupeSpinnerList);
-        jupeSpinner.putString("selection", "Selectionner la jupe"); //TODO est-ce vraiment nécessaire ?
+        jupeSpinner.putString("selection", "Sélectionner la jupe"); //TODO est-ce vraiment nécessaire ?
         jupeSpinner.putString("enabled", "false");
         views.putDatastoreBundle("diametre_de_sertissage_jupe", jupeSpinner);
 
         DatastoreBundle emboutSpinner = new DatastoreBundle();
         ArrayList<String> emboutSpinnerList = new ArrayList<>();
-        emboutSpinnerList.add("Selectionner l'embout");
+        emboutSpinnerList.add("Sélectionner l'embout");
         emboutSpinnerList.addAll(removeNulls(b.getStringArrayList("embouts")));
         emboutSpinner.putString("id", "diametre_de_sertissage_embout");
         emboutSpinner.putStringArrayList("list", emboutSpinnerList);
-        emboutSpinner.putString("selection", "Selectionner l'embout"); //TODO est-ce vraiment nécessaire ?
+        emboutSpinner.putString("selection", "Sélectionner l'embout"); //TODO est-ce vraiment nécessaire ?
         emboutSpinner.putString("enabled", "false");
         views.putDatastoreBundle("diametre_de_sertissage_embout", emboutSpinner);
 
