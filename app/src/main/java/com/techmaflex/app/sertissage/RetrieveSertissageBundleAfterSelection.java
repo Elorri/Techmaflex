@@ -129,6 +129,7 @@ public class RetrieveSertissageBundleAfterSelection implements RetrieveDataInter
         jupeSpinner.putStringArrayList("list", jupeSpinnerList);
         jupeSpinner.putString("selection", jupeSpinner.containsKey("selection_user") ?
                 jupeSpinner.getString("selection_user") : jupeSpinnerList.get(0));
+        jupeSpinner.putString("enabled","true");
         views.putDatastoreBundle("diametre_de_sertissage_jupe", jupeSpinner);
 
         ArrayList<String> emboutSpinnerList = new ArrayList<>();
@@ -140,6 +141,7 @@ public class RetrieveSertissageBundleAfterSelection implements RetrieveDataInter
         emboutSpinner.putStringArrayList("list", emboutSpinnerList);
         emboutSpinner.putString("selection", emboutSpinner.containsKey("selection_user") ?
                 emboutSpinner.getString("selection_user") : emboutSpinnerList.get(0));
+        emboutSpinner.putString("enabled","true");
         views.putDatastoreBundle("diametre_de_sertissage_embout", emboutSpinner);
 
         //Si on a un diamètre :on l'affiche avec le bouton envoyer

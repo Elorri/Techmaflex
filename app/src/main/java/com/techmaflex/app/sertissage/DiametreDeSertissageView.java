@@ -141,6 +141,8 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
         StringSpinnerAdapter jupeAdapter =
                 new StringSpinnerAdapter(mContext, new ArrayList<String>());
         jupeSpinner.setAdapter(jupeAdapter);
+        jupeSpinner.setEnabled(mBundle.getDatastoreBundle("views")
+                .getDatastoreBundle("diametre_de_sertissage_jupe").getString("enabled").equals("true"));
         jupeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -157,6 +159,8 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
         final Spinner emboutSpinner = (Spinner) findViewByName("diametre_de_sertissage_embout");
         StringSpinnerAdapter emboutAdapter = new StringSpinnerAdapter(mContext, new ArrayList<String>());
         emboutSpinner.setAdapter(emboutAdapter);
+        emboutSpinner.setEnabled(mBundle.getDatastoreBundle("views")
+                .getDatastoreBundle("diametre_de_sertissage_embout").getString("enabled").equals("true"));
         emboutSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -183,16 +187,16 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
         DatastoreBundle views = mBundle.getDatastoreBundle("views");
         DatastoreBundle tuyauBundle = views.getDatastoreBundle("diametre_de_sertissage_tuyau");
         String selection = (String) spinnerView.getAdapter().getItem(position);
-        if(!isFirstTuyauFirstSelection && !selection.equals(tuyauBundle.getString("selection"))){
+        if (!isFirstTuyauFirstSelection && !selection.equals(tuyauBundle.getString("selection"))) {
             DatastoreBundle jupeBundle = views.getDatastoreBundle("diametre_de_sertissage_jupe");
-            if(jupeBundle.containsKey("selection_user")){
+            if (jupeBundle.containsKey("selection_user")) {
                 jupeBundle.remove("selection_user");
                 //TODO modifier le datastore de façon a éviter d'avoir à faire ça à chaque fois
                 views.putDatastoreBundle("diametre_de_sertissage_jupe", jupeBundle);
                 mBundle.putDatastoreBundle("views", views);
             }
             DatastoreBundle emboutBundle = views.getDatastoreBundle("diametre_de_sertissage_embout");
-            if(emboutBundle.containsKey("selection_user")){
+            if (emboutBundle.containsKey("selection_user")) {
                 emboutBundle.remove("selection_user");
                 //TODO modifier le datastore de façon a éviter d'avoir à faire ça à chaque fois
                 views.putDatastoreBundle("diametre_de_sertissage_embout", emboutBundle);
@@ -292,25 +296,27 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
                     break;
                 }
                 case "diametre_de_sertissage_jupe": {
-                    Spinner diametre_de_sertissage_jupe = (Spinner) findViewByName("diametre_de_sertissage_jupe");
+                    Spinner jupeSpinner = (Spinner) findViewByName("diametre_de_sertissage_jupe");
                     StringSpinnerAdapter jupeAdapter =
-                            ((StringSpinnerAdapter) diametre_de_sertissage_jupe.getAdapter());
+                            ((StringSpinnerAdapter) jupeSpinner.getAdapter());
                     DatastoreBundle aViewBundle = views.getDatastoreBundle("diametre_de_sertissage_jupe");
                     jupeAdapter.swapData(aViewBundle.getStringArrayList("list"));
-                    diametre_de_sertissage_jupe
+                    jupeSpinner
                             .setSelection(jupeAdapter.getPosition(aViewBundle.getString("selection")));
-                    diametre_de_sertissage_jupe.setTag(aViewBundle);
+                    jupeSpinner.setEnabled(aViewBundle.getString("enabled").equals("true"));
+                    jupeSpinner.setTag(aViewBundle);
                     break;
                 }
                 case "diametre_de_sertissage_embout": {
-                    Spinner diametre_de_sertissage_embout = (Spinner) findViewByName("diametre_de_sertissage_embout");
+                    Spinner emboutSpinner = (Spinner) findViewByName("diametre_de_sertissage_embout");
                     StringSpinnerAdapter emboutAdapter =
-                            ((StringSpinnerAdapter) diametre_de_sertissage_embout.getAdapter());
+                            ((StringSpinnerAdapter) emboutSpinner.getAdapter());
                     DatastoreBundle aViewBundle = views.getDatastoreBundle("diametre_de_sertissage_embout");
                     emboutAdapter.swapData(aViewBundle.getStringArrayList("list"));
-                    diametre_de_sertissage_embout
+                    emboutSpinner
                             .setSelection(emboutAdapter.getPosition(aViewBundle.getString("selection")));
-                    diametre_de_sertissage_embout.setTag(aViewBundle);
+                    emboutSpinner.setEnabled(aViewBundle.getString("enabled").equals("true"));
+                    emboutSpinner.setTag(aViewBundle);
                     break;
                 }
                 case "diametre_de_sertissage_value": {

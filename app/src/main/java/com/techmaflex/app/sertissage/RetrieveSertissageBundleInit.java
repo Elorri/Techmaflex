@@ -98,6 +98,7 @@ public class RetrieveSertissageBundleInit implements RetrieveDataInterface {
         jupeSpinner.putString("id", "diametre_de_sertissage_jupe");
         jupeSpinner.putStringArrayList("list", jupeSpinnerList);
         jupeSpinner.putString("selection", "Selectionner la jupe"); //TODO est-ce vraiment nécessaire ?
+        jupeSpinner.putString("enabled", "false");
         views.putDatastoreBundle("diametre_de_sertissage_jupe", jupeSpinner);
 
         DatastoreBundle emboutSpinner = new DatastoreBundle();
@@ -107,6 +108,7 @@ public class RetrieveSertissageBundleInit implements RetrieveDataInterface {
         emboutSpinner.putString("id", "diametre_de_sertissage_embout");
         emboutSpinner.putStringArrayList("list", emboutSpinnerList);
         emboutSpinner.putString("selection", "Selectionner l'embout"); //TODO est-ce vraiment nécessaire ?
+        emboutSpinner.putString("enabled", "false");
         views.putDatastoreBundle("diametre_de_sertissage_embout", emboutSpinner);
 
         b.putDatastoreBundle("views", views);
