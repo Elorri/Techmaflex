@@ -31,13 +31,13 @@ public class RetrieveSertissageBundleAfterSelection implements RetrieveDataInter
         String emboutSelection;
         if (bundle.getBoolean("is_spinner_init_selection")) {
             tuyauSelection = tuyauSpinner.getString("selection")
-                    .equals("Selectionner le tuyau") ? null : tuyauSpinner.getString("selection");
+                    .equals("Sélectionner le tuyau") ? null : tuyauSpinner.getString("selection");
 
             jupeSelection = jupeSpinner.getString("selection")
-                    .equals("Selectionner la jupe") ? null : jupeSpinner.getString("selection");
+                    .equals("Sélectionner la jupe") ? null : jupeSpinner.getString("selection");
 
             emboutSelection = emboutSpinner.getString("selection")
-                    .equals("Selectionner l'embout") ? null : emboutSpinner.getString("selection");
+                    .equals("Sélectionner l'embout") ? null : emboutSpinner.getString("selection");
         } else {
             tuyauSelection = tuyauSpinner.containsKey("selection_user") ?
                     tuyauSpinner.getString("selection_user") : null;
@@ -106,10 +106,10 @@ public class RetrieveSertissageBundleAfterSelection implements RetrieveDataInter
         DatastoreBundle views = bundle.getDatastoreBundle("views");
 
         //On mets à jours les vues Spinner avec les nouvelles listes
-        // Note : on est obligé d'ajouter les options 'selectionner' car bizarement dès lors qu'il y a 2 item, selectionner le premier, ne produit rien. Il ne passe pas dans le code. Pour parrer à cela, il faudrait faire un Spinner avec un premier item caché cad un layout très petit voir gone. Comme les besoins du client spécifient qu'il faut l'option sélectionner sur chaque menu. On a pas besoin de faire cela. Mais il serait intéressant de se faire une custom version du spinner.
+        // Note : on est obligé d'ajouter les options 'Sélectionner' car bizarement dès lors qu'il y a 2 item, Sélectionner le premier, ne produit rien. Il ne passe pas dans le code. Pour parrer à cela, il faudrait faire un Spinner avec un premier item caché cad un layout très petit voir gone. Comme les besoins du client spécifient qu'il faut l'option sélectionner sur chaque menu. On a pas besoin de faire cela. Mais il serait intéressant de se faire une custom version du spinner.
         ArrayList<String> tuyauSpinnerList = new ArrayList<>();
         if (bundle.getStringArrayList("tuyaux").size() > 1) {
-            tuyauSpinnerList.add("Selectionner le tuyau");
+            tuyauSpinnerList.add("Sélectionner le tuyau");
         }
         tuyauSpinnerList.addAll(removeNulls(bundle.getStringArrayList("tuyaux")));
         tuyauSpinner.putString("id", "diametre_de_sertissage_tuyau");
@@ -117,34 +117,39 @@ public class RetrieveSertissageBundleAfterSelection implements RetrieveDataInter
         //TODO s'assurer qu'il y a au moins 1 élément
 
         tuyauSpinner.putString("selection", tuyauSpinner.containsKey("selection_user") ?
-                tuyauSpinner.getString("selection_user") : tuyauSpinnerList.get(0)); 
+                tuyauSpinner.getString("selection_user") : tuyauSpinnerList.get(0));
         views.putDatastoreBundle("diametre_de_sertissage_tuyau", tuyauSpinner);
 
         ArrayList<String> jupeSpinnerList = new ArrayList<>();
         if (bundle.getStringArrayList("jupes").size() > 1) {
-            jupeSpinnerList.add("Selectionner la jupe");
+            jupeSpinnerList.add("Sélectionner la jupe");
         }
         jupeSpinnerList.addAll(removeNulls(bundle.getStringArrayList("jupes")));
         jupeSpinner.putString("id", "diametre_de_sertissage_jupe");
         jupeSpinner.putStringArrayList("list", jupeSpinnerList);
         jupeSpinner.putString("selection", jupeSpinner.containsKey("selection_user") ?
                 jupeSpinner.getString("selection_user") : jupeSpinnerList.get(0));
-        jupeSpinner.putString("enabled","true");
+        jupeSpinner.putString("enabled", "true");
         views.putDatastoreBundle("diametre_de_sertissage_jupe", jupeSpinner);
 
         ArrayList<String> emboutSpinnerList = new ArrayList<>();
         if (bundle.getStringArrayList("embouts").size() > 1) {
-            emboutSpinnerList.add("Selectionner l'embout");
+            emboutSpinnerList.add("Sélectionner l'embout");
         }
         emboutSpinnerList.addAll(removeNulls(bundle.getStringArrayList("embouts")));
         emboutSpinner.putString("id", "diametre_de_sertissage_embout");
         emboutSpinner.putStringArrayList("list", emboutSpinnerList);
         emboutSpinner.putString("selection", emboutSpinner.containsKey("selection_user") ?
                 emboutSpinner.getString("selection_user") : emboutSpinnerList.get(0));
-        emboutSpinner.putString("enabled","true");
+        emboutSpinner.putString("enabled", "true");
         views.putDatastoreBundle("diametre_de_sertissage_embout", emboutSpinner);
 
         //Si on a un diamètre :on l'affiche avec le bouton envoyer
+        DatastoreBundle diametre_caractere = views.getDatastoreBundle("diametre_caractere");
+        diametre_caractere.putString("visibility", diametreDeSertissageArray.size() == 1 ? "invisible" : "visible");
+        //diametre_caractere.putString("text", diametreDeSertissageArray.size() == 1 ? "" : "Ø");
+        views.putDatastoreBundle("diametre_caractere", diametre_caractere);
+
         DatastoreBundle diametre_de_sertissage_value = views.getDatastoreBundle("diametre_de_sertissage_value");
         diametre_de_sertissage_value.putString("visibility", diametreDeSertissageArray.size() == 1 ? "visible" : "invisible");
         diametre_de_sertissage_value.putString("text",
@@ -153,6 +158,10 @@ public class RetrieveSertissageBundleAfterSelection implements RetrieveDataInter
 
         DatastoreBundle diametre_de_sertissage_send = views.getDatastoreBundle("diametre_de_sertissage_send");
         diametre_de_sertissage_send.putString("enabled", diametreDeSertissageArray.size() == 1 ? "true" : "false");
+        diametre_de_sertissage_send.putString("text_color",
+                diametre_de_sertissage_send.getString("enabled")=="true" ? "#ffffff" : "#E0F2F8");
+        diametre_de_sertissage_send.putString("background_color",
+                diametre_de_sertissage_send.getString("enabled")=="true" ? "#005D7D" : "#73005D7D");
         views.putDatastoreBundle("diametre_de_sertissage_send", diametre_de_sertissage_send);
 
         bundle.putDatastoreBundle("views", views);

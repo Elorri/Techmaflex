@@ -70,6 +70,12 @@ public class RetrieveSertissageBundleInit implements RetrieveDataInterface {
 
         //On affiche le diametre et le bouton envoyer
 
+        DatastoreBundle diametreCaractereTextview = new DatastoreBundle();
+        diametreCaractereTextview.putString("id", "diametre_caractere");
+        diametreCaractereTextview.putString("visibility", "visible");
+        diametreCaractereTextview.putString("text", "Ø");
+        views.putDatastoreBundle("diametre_caractere", diametreCaractereTextview);
+
         DatastoreBundle diametreTextview = new DatastoreBundle();
         diametreTextview.putString("id", "diametre_de_sertissage_value");
         diametreTextview.putString("visibility", "invisible");
@@ -79,6 +85,9 @@ public class RetrieveSertissageBundleInit implements RetrieveDataInterface {
         DatastoreBundle diametreButton = new DatastoreBundle();
         diametreButton.putString("id", "diametre_de_sertissage_send");
         diametreButton.putString("enabled", "false");
+        //TODO pour faire bien ici il faudrait mettre l'id de la couleur, et aller chercher le string dans une table sql
+        diametreButton.putString("text_color", "#E0F2F8");
+        diametreButton.putString("background_color", "#73005D7D");
         views.putDatastoreBundle("diametre_de_sertissage_send", diametreButton);
 
         //On prépare les données que devront contenir les menus déroulants

@@ -4,7 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+>
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo_techmaflex"/>
+    </android.support.v7.widget.Toolbar>
 
     <TextView
         android:id="@+id/diametre_de_sertissage_message"
@@ -16,7 +28,22 @@
         android:textColor="@color/primary_light_text"
         android:visibility="gone"/>
 
-    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryLightAlpha2">
+
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:layout_alignParentBottom="true"
+                  android:gravity="end"
+                  android:paddingBottom="8dp"
+                  android:paddingEnd="16dp"
+                  android:paddingStart="16dp"
+                  android:paddingTop="8dp"
+                  android:text="The assembly moves with us"
+                  android:textStyle="italic"
+        android:textColor="@color/colorPrimary"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"/>
 
         <LinearLayout
             android:id="@+id/diametre_de_sertissage_no_data"
@@ -113,31 +140,55 @@
                 android:gravity="center"
                 android:padding="16dp"
                 android:text="@string/diametre_de_serissage"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
+                android:textColor="@color/primary_dark_text"
+                android:textSize="24sp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="16dp"
                 android:layout_weight="2"
+                android:background="@color/secondaryVeryLight"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal"
-                android:padding="20dp">
+                android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/diametre_de_sertissage_value"
+
+                <FrameLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:padding="20dp"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                    tools:text="18,6"/>
+                    android:gravity="center_horizontal">
+                    <TextView
+                        android:id="@+id/diametre_caractere"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textColor="@color/colorPrimaryLightAlpha2"
+                        android:textSize="60sp"
+                        android:visibility="visible"
+                        tools:text="Ø"/>
+
+                    <TextView
+                        android:id="@+id/diametre_de_sertissage_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="16dp"
+                        android:textColor="@color/primary_dark_text"
+                        android:textSize="36sp"
+                        android:visibility="gone"
+                        tools:text="18,6"/>
+                </FrameLayout>
+
                 <Button
                     android:id="@+id/diametre_de_sertissage_send"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/colorPrimary"
                     android:text="Envoyer"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/secondaryVeryLight"
                 />
 
             </LinearLayout>
@@ -146,25 +197,30 @@
                 android:id="@+id/diametre_de_sertissage_tuyau"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
-        />
+                android:layout_gravity="center"
+                android:layout_marginBottom="4dp"
+                android:padding="16dp"/>
 
             <Spinner
                 android:id="@+id/diametre_de_sertissage_jupe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"/>
+                android:layout_gravity="center"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:padding="16dp"/>
 
             <Spinner
                 android:id="@+id/diametre_de_sertissage_embout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
-           />
+                android:layout_gravity="center"
+                android:layout_marginTop="4dp"
+                android:padding="16dp"/>
 
         </LinearLayout>
 
-    </FrameLayout>
+    </RelativeLayout>
 
 
 </LinearLayout>

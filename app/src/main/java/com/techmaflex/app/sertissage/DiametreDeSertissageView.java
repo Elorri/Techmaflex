@@ -1,11 +1,13 @@
 package com.techmaflex.app.sertissage;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -206,12 +208,15 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
         tuyauSelectCount++;
         boolean isFirstTuyauFirstSelection = tuyauSelectCount <= 1;
 
+        String selection = (String) spinnerView.getAdapter().getItem(position);
+        if (selection.equals("Sélectionner le tuyau")) {
+            return; //Il n'a rien sélectionné, on sort.
+        }
+
         //Si l'utilisateur change d'item dans ce menu (qui contient toujours toutes les options),
         // on supprime les selections qu'il aurait pu faire dans les autres menus.
         DatastoreBundle views = mBundle.getDatastoreBundle("views");
-        DatastoreBundle tuyauBundle = views.getDatastoreBundle("diametre_de_sertissage_tuyau");
-        String selection = (String) spinnerView.getAdapter().getItem(position);
-        if (!isFirstTuyauFirstSelection && !selection.equals(tuyauBundle.getString("selection"))) {
+        if (!isFirstTuyauFirstSelection) {
             DatastoreBundle jupeBundle = views.getDatastoreBundle("diametre_de_sertissage_jupe");
             if (jupeBundle.containsKey("selection_user")) {
                 jupeBundle.remove("selection_user");
@@ -233,12 +238,22 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
     private void onJupeSelected(Datastore datastore, Spinner spinnerView, int position) {
         jupeSelectCount++;
         boolean isFirstJupeFirstSelection = jupeSelectCount <= 1;
+
+        String selection = (String) spinnerView.getAdapter().getItem(position);
+        if (selection.equals("Sélectionner la jupe")) {
+            return; //Il n'a rien sélectionné, on sort.
+        }
         onSpinnerItemSelected(datastore, spinnerView, position, !isFirstJupeFirstSelection);
     }
 
     private void onEmboutSelected(Datastore datastore, Spinner spinnerView, int position) {
         emboutSelectCount++;
         boolean isFirstEmboutFirstSelection = emboutSelectCount <= 1;
+
+        String selection = (String) spinnerView.getAdapter().getItem(position);
+        if (selection.equals("Sélectionner l'embout")) {
+            return; //Il n'a rien sélectionné, on sort.
+        }
         onSpinnerItemSelected(datastore, spinnerView, position, !isFirstEmboutFirstSelection);
     }
 
@@ -247,9 +262,7 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
         spinnerView.setSelection(position);
         DatastoreBundle spinnerViewBundle = (DatastoreBundle) spinnerView.getTag();
         //DatastoreBundle spinnerViewBundle = findBundleViewByNameId(mBundle, getRessourceName(spinnerView.getId()));
-        if (selection.equals(spinnerViewBundle.getString("selection"))) {
-            return; //Il n'a rien sélectionné, on sort.
-        }
+
         //Cette selection peut affecter les 2 autres listes, on recalcule donc le bundle de la vue.
         DatastoreBundle views = mBundle.getDatastoreBundle("views");
         spinnerViewBundle.putString(isUserSelection ? "selection_user" : "selection", selection.equals("") ? "null" : selection);
@@ -343,6 +356,13 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
                     emboutSpinner.setTag(aViewBundle);
                     break;
                 }
+                case "diametre_caractere": {
+                    TextView diametre_caractere = (TextView) findViewByName("diametre_caractere");
+                    DatastoreBundle aViewBundle = views.getDatastoreBundle("diametre_caractere");
+                    diametre_caractere.setVisibility(getIntVisibility(aViewBundle.getString("visibility")));
+                    diametre_caractere.setText(aViewBundle.getString("text"));
+                    break;
+                }
                 case "diametre_de_sertissage_value": {
                     TextView diametre_de_sertissage_value = (TextView) findViewByName("diametre_de_sertissage_value");
                     DatastoreBundle aViewBundle = views.getDatastoreBundle("diametre_de_sertissage_value");
@@ -351,9 +371,11 @@ public class DiametreDeSertissageView extends LinearLayout implements ViewInterf
                     break;
                 }
                 case "diametre_de_sertissage_send": {
-                    View diametre_de_sertissage_send = findViewByName("diametre_de_sertissage_send");
+                    Button diametre_de_sertissage_send = (Button) findViewByName("diametre_de_sertissage_send");
                     DatastoreBundle aViewBundle = views.getDatastoreBundle("diametre_de_sertissage_send");
                     diametre_de_sertissage_send.setEnabled(aViewBundle.getString("enabled").equals("true"));
+                    diametre_de_sertissage_send.setTextColor(Color.parseColor(aViewBundle.getString("text_color")));
+                    diametre_de_sertissage_send.setBackgroundColor(Color.parseColor(aViewBundle.getString("background_color")));
                     break;
                 }
                 default:
